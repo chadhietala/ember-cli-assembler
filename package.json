@@ -1,0 +1,14 @@
+{
+  "name": "ember-cli-builder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/builder.js",
+  "scripts": {
+    "test": "mocha -R spec tests/**/*-test.js"
+  },
+  "keywords": [
+    "ember-cli"
+  ],
+  "author": "Chad Hietala, Stefan Penner and Ember CLI Contributors",
+  "license": "MIT"
+}
