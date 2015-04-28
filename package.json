@@ -10,5 +10,14 @@
     "ember-cli"
   ],
   "author": "Chad Hietala, Stefan Penner and Ember CLI Contributors",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "broccoli-es3-safe-recast": "^2.0.0",
+    "broccoli-es6modules": "git://github.com/chadhietala/broccoli-es6modules.git#gen-dep-graph",
+    "broccoli-funnel": "^0.2.3",
+    "broccoli-merge-trees": "^0.2.1",
+    "broccoli-unwatched-tree": "^0.1.1",
+    "ember-cli": "^0.2.3",
+    "lodash-node": "^3.7.0"
+  }
 }
