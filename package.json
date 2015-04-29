@@ -4,7 +4,8 @@
   "description": "",
   "main": "lib/builder.js",
   "scripts": {
-    "test": "mocha -R spec tests/**/*-test.js"
+    "test": "mocha -R spec tests/**/*-test.js",
+    "test:debug": "mocha debug -R spec tests/**/*-test.js"
   },
   "keywords": [
     "ember-cli"
@@ -17,7 +18,12 @@
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
     "broccoli-unwatched-tree": "^0.1.1",
-    "ember-cli": "^0.2.3",
+    "ember-cli": "git://github.com/chadhietala/ember-cli.git#reexporter",
+    "glob": "^5.0.5",
     "lodash-node": "^3.7.0"
+  },
+  "devDependencies": {
+    "chai": "^2.3.0",
+    "mocha": "^2.2.4"
   }
 }
