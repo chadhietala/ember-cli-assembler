@@ -18,5 +18,7 @@
   },
   "author": "",
   "license": "MIT",
-  "devDependencies": {}
+  "dependencies": {
+    "ember-cli-ember": "2.0.0"
+  }
 }

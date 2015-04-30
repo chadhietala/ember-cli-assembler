@@ -23,7 +23,10 @@
     "lodash-node": "^3.7.0"
   },
   "devDependencies": {
+    "broccoli": "^0.16.2",
+    "broccoli-merge-trees": "^0.2.1",
     "chai": "^2.3.0",
-    "mocha": "^2.2.4"
+    "mocha": "^2.2.4",
+    "walk-sync": "^0.1.3"
   }
 }

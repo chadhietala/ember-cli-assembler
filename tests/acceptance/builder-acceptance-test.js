@@ -1,12 +1,18 @@
 'use strict';
 
 var Builder = require('../../lib/builder');
+var broccoli = require('broccoli');
 var path = require('path');
 var expect = require('chai').expect;
+var mergeTrees = require('broccoli-merge-trees');
+var fs = require('fs');
+var walkSync = require('walk-sync');
+
 
 describe.only('Acceptance: Builder', function() {
   var cwd = process.cwd(),
       dummy = path.join(cwd, 'tests', 'fixtures', 'dummy'),
+      build,
       builder;
 
   beforeEach(function() {
@@ -15,6 +21,9 @@ describe.only('Acceptance: Builder', function() {
 
   afterEach(function() {
     process.chdir(cwd);
+    if (build) {
+      return build.cleanup();
+    }
   });
 
   it('should prime the builder with trees and options', function() {
@@ -27,7 +36,33 @@ describe.only('Acceptance: Builder', function() {
     builder = new Builder();
     var trees = builder.toTree();
     expect(trees).to.be.an('array');
-    expect(trees.length).to.eql(5);
+  });
+
+  it('addons should not override the comsuming applications files if the same file exists', function () {
+    builder = new Builder();
+    var trees = builder.toTree();
+
+    build = new broccoli.Builder(mergeTrees(trees));
+    return build.build().then(function(results) {
+      var basePath = path.join(results.directory, 'dummy/components');
+      var containsAddon = fs.readFileSync(path.join(basePath, 'foo-bar.js'), 'utf8').indexOf('fromAddon') > -1;
+      expect(!containsAddon).to.eql(true);
+      containsAddon = fs.readFileSync(path.join(basePath, 'baz-bar.js'), 'utf8').indexOf('fromAddon') > -1;
+      expect(containsAddon).to.eql(true);
+    }, function(e) {
+      console.log('ssssss');
+    }); 
+  });
+
+  it('should include the addon directory', function () {
+    builder = new Builder();
+    var trees = builder.toTree();
+    build = new broccoli.Builder(mergeTrees(trees));
+    return build.build().then(function(results) {
+      var files = walkSync(results.directory);
+      expect(files.indexOf('ember-cli-ember/')).to.be.above(-1);
+      console.log(files);
+    });
   });
 
 });
