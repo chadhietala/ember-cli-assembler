@@ -96,8 +96,10 @@ describe.only('Acceptance: Builder', function() {
         'dummy-tests/dep-graph.json',
         'dummy-tests/unit/',
         'dummy-tests/unit/components/',
-        'dummy-tests/unit/components/foo-bar-test.js'
+        'dummy-tests/unit/components/foo-bar-test.js',
+        'dummy-tests/index.html'
       ];
+      console.log(files);
       expect(builder.env).to.eql('development');
       expectactions.forEach(function(file) {
         expect(files.indexOf(file) > -1).to.eql(true);
