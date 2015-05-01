@@ -51,13 +51,22 @@ describe.only('Acceptance: Builder', function() {
     }); 
   });
 
+  it('should have the index.html', function() {
+    builder = new Builder();
+    var trees = builder.toTree();
+    build = new broccoli.Builder(mergeTrees(trees));
+    return build.build().then(function(results) {
+      var files = walkSync(results.directory);
+      expect(files.indexOf('index.html') > -1).to.be.eql(true);
+    });
+  });
+
   it('should include the addon directory', function () {
     builder = new Builder();
     var trees = builder.toTree();
     build = new broccoli.Builder(mergeTrees(trees));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
-      console.log(files);
       var folders = files.filter(function(item) {
         return item.slice(-1) === '/' && item.split('/').length === 2;
       });
@@ -92,6 +101,25 @@ describe.only('Acceptance: Builder', function() {
       expect(builder.env).to.eql('development');
       expectactions.forEach(function(file) {
         expect(files.indexOf(file) > -1).to.eql(true);
+      });
+    });
+  });
+
+  it('should not contain tests from the addon', function () {
+    builder = new Builder();
+    var trees = builder.toTree();
+    build = new broccoli.Builder(mergeTrees(trees));
+    return build.build().then(function(results) {
+      var files = walkSync(results.directory);
+      var expectactions = [
+        'ember-cli-ember-tests/',
+        'ember-cli-ember-tests/dep-graph.json',
+        'ember-cli-ember-tests/unit/',
+        'ember-cli-ember-tests/ember-test.js'
+      ];
+      expect(builder.env).to.eql('development');
+      expectactions.forEach(function(file) {
+        expect(files.indexOf(file) > -1).to.eql(false);
       });
     });
   });

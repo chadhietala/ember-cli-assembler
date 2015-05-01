@@ -17,6 +17,7 @@
     "broccoli-es6modules": "git://github.com/chadhietala/broccoli-es6modules.git#gen-dep-graph",
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
+    "broccoli-stew": "^0.2.1",
     "broccoli-unwatched-tree": "^0.1.1",
     "ember-cli": "git://github.com/chadhietala/ember-cli.git#reexporter",
     "glob": "^5.0.5",
