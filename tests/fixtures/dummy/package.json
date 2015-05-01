@@ -19,6 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "ember-cli-ember": "2.0.0"
+    "ember-cli-ember": "2.0.0",
+    "ember-cli-hypebars": "9.0.0"
   }
 }

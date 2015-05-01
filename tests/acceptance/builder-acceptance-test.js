@@ -9,7 +9,7 @@ var fs = require('fs');
 var walkSync = require('walk-sync');
 
 
-describe.only('Acceptance: Builder', function() {
+describe('Acceptance: Builder', function() {
   var cwd = process.cwd(),
       dummy = path.join(cwd, 'tests', 'fixtures', 'dummy'),
       build,
@@ -41,7 +41,6 @@ describe.only('Acceptance: Builder', function() {
   it('addons should not override the comsuming applications files if the same file exists', function () {
     builder = new Builder();
     var trees = builder.toTree();
-
     build = new broccoli.Builder(mergeTrees(trees));
     return build.build().then(function(results) {
       var basePath = path.join(results.directory, 'dummy/components');
@@ -49,19 +48,20 @@ describe.only('Acceptance: Builder', function() {
       expect(!containsAddon).to.eql(true);
       containsAddon = fs.readFileSync(path.join(basePath, 'baz-bar.js'), 'utf8').indexOf('fromAddon') > -1;
       expect(containsAddon).to.eql(true);
-    }, function(e) {
-      console.log('ssssss');
     }); 
   });
 
-  it('should include the addon directory', function () {
+  it.only('should include the addon directory', function () {
     builder = new Builder();
     var trees = builder.toTree();
     build = new broccoli.Builder(mergeTrees(trees));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
-      expect(files.indexOf('ember-cli-ember/')).to.be.above(-1);
-      console.log(files);
+      console.log(fs.readFileSync(results.directory + '/dummy/dep-graph.json', 'utf8'));
+      var folders = files.filter(function(item) {
+        return item.slice(-1) === '/' && item.split('/').length === 2;
+      });
+      expect(folders).to.deep.eql(['dummy/', 'ember-cli-ember/']);
     });
   });
 
