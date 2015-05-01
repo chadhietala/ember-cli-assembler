@@ -57,10 +57,11 @@ describe.only('Acceptance: Builder', function() {
     build = new broccoli.Builder(mergeTrees(trees));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
+      console.log(files);
       var folders = files.filter(function(item) {
         return item.slice(-1) === '/' && item.split('/').length === 2;
       });
-      expect(folders).to.deep.eql(['dummy/', 'ember-cli-ember/']);
+      expect(folders).to.deep.eql(['dummy/', 'dummy-tests/', 'ember-cli-ember/']);
     });
   });
 
@@ -72,6 +73,26 @@ describe.only('Acceptance: Builder', function() {
       var expected = fs.readFileSync(path.resolve('..', '..', 'expectations/templates/application.js'), 'utf8');
       var assertion = fs.readFileSync(results.directory + '/dummy/templates/application.js', 'utf8');
       expect(expected).to.eql(assertion);  
+    });
+  });
+
+  it('should contain tests if environment is development', function () {
+    builder = new Builder();
+    var trees = builder.toTree();
+    build = new broccoli.Builder(mergeTrees(trees));
+    return build.build().then(function(results) {
+      var files = walkSync(results.directory);
+      var expectactions = [
+        'dummy-tests/',
+        'dummy-tests/dep-graph.json',
+        'dummy-tests/unit/',
+        'dummy-tests/unit/components/',
+        'dummy-tests/unit/components/foo-bar-test.js'
+      ];
+      expect(builder.env).to.eql('development');
+      expectactions.forEach(function(file) {
+        expect(files.indexOf(file) > -1).to.eql(true);
+      });
     });
   });
 
