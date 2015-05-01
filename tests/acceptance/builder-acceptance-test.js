@@ -9,7 +9,7 @@ var fs = require('fs');
 var walkSync = require('walk-sync');
 
 
-describe('Acceptance: Builder', function() {
+describe.only('Acceptance: Builder', function() {
   var cwd = process.cwd(),
       dummy = path.join(cwd, 'tests', 'fixtures', 'dummy'),
       build,
@@ -51,17 +51,27 @@ describe('Acceptance: Builder', function() {
     }); 
   });
 
-  it.only('should include the addon directory', function () {
+  it('should include the addon directory', function () {
     builder = new Builder();
     var trees = builder.toTree();
     build = new broccoli.Builder(mergeTrees(trees));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
-      console.log(fs.readFileSync(results.directory + '/dummy/dep-graph.json', 'utf8'));
       var folders = files.filter(function(item) {
         return item.slice(-1) === '/' && item.split('/').length === 2;
       });
       expect(folders).to.deep.eql(['dummy/', 'ember-cli-ember/']);
+    });
+  });
+
+  it('should preprocess templates with an installed pre-processor', function () {
+    builder = new Builder();
+    var trees = builder.toTree();
+    build = new broccoli.Builder(mergeTrees(trees));
+    return build.build().then(function(results) {
+      var expected = fs.readFileSync(path.resolve('..', '..', 'expectations/templates/application.js'), 'utf8');
+      var assertion = fs.readFileSync(results.directory + '/dummy/templates/application.js', 'utf8');
+      expect(expected).to.eql(assertion);  
     });
   });
 
