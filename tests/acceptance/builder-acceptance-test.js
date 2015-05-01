@@ -8,7 +8,6 @@ var mergeTrees = require('broccoli-merge-trees');
 var fs = require('fs');
 var walkSync = require('walk-sync');
 
-
 describe.only('Acceptance: Builder', function() {
   var cwd = process.cwd(),
       dummy = path.join(cwd, 'tests', 'fixtures', 'dummy'),
@@ -96,14 +95,22 @@ describe.only('Acceptance: Builder', function() {
         'dummy-tests/dep-graph.json',
         'dummy-tests/unit/',
         'dummy-tests/unit/components/',
-        'dummy-tests/unit/components/foo-bar-test.js',
-        'dummy-tests/index.html'
+        'dummy-tests/unit/components/foo-bar-test.js'
       ];
-      console.log(files);
       expect(builder.env).to.eql('development');
       expectactions.forEach(function(file) {
         expect(files.indexOf(file) > -1).to.eql(true);
       });
+    });
+  });
+
+  it('should contain the test index', function() {
+    builder = new Builder();
+    var trees = builder.toTree();
+    build = new broccoli.Builder(mergeTrees(trees));
+    return build.build().then(function(results) {
+      var files = walkSync(results.directory);
+      expect(files.indexOf('dummy-tests/index.html') > -1).to.eql(true);
     });
   });
 
@@ -126,4 +133,24 @@ describe.only('Acceptance: Builder', function() {
     });
   });
 
+  it('should include styles', function() {
+    builder = new Builder();
+    var trees = builder.toTree();
+    build = new broccoli.Builder(mergeTrees(trees));
+    return build.build().then(function(results) {
+      var files = walkSync(results.directory);
+      expect(files.indexOf('dummy/app/styles/foo.css') > -1).to.eql(true);
+    });
+  });
+
+  it('styles should have gone through the preprocessor', function() {
+    builder = new Builder();
+    var trees = builder.toTree();
+    build = new broccoli.Builder(mergeTrees(trees));
+    return build.build().then(function(results) {
+      var expected = fs.readFileSync(path.resolve('..', '..', 'expectations/styles/foo.css'), 'utf8');
+      var assertion = fs.readFileSync(results.directory + '/dummy/app/styles/foo.css', 'utf8');
+      expect(expected).to.eql(assertion);
+    });
+  });
 });
