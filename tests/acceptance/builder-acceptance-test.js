@@ -14,12 +14,21 @@ describe.only('Acceptance: Builder', function() {
       build,
       builder;
 
+  before(function() {
+    process.stdout.setMaxListeners(0);
+  });
+
   beforeEach(function() {
     process.chdir(dummy);
   });
 
   afterEach(function() {
     process.chdir(cwd);
+
+    if (builder) {
+      builder = null;
+    }
+    
     if (build) {
       return build.cleanup();
     }
