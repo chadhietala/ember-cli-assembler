@@ -8,7 +8,7 @@ var mergeTrees = require('broccoli-merge-trees');
 var fs = require('fs');
 var walkSync = require('walk-sync');
 
-describe.only('Acceptance: Builder', function() {
+describe('Acceptance: Builder', function() {
   var cwd = process.cwd(),
       dummy = path.join(cwd, 'tests', 'fixtures', 'dummy'),
       build,

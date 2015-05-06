@@ -289,13 +289,6 @@ describe('broccoli/ember-app', function() {
           addonTreesForStub = stub(builder, 'addonTreesFor', ['batman']);
         });
 
-        it('_processedVendorTree calls addonTreesFor', function() {
-          builder._processedVendorTree();
-
-          expect(addonTreesForStub.calledWith[0][0]).to.equal('addon');
-          expect(addonTreesForStub.calledWith[1][0]).to.equal('vendor');
-        });
-
         it('_processedAppTree calls addonTreesFor', function() {
           builder._processedAppTree();
 
@@ -310,67 +303,6 @@ describe('broccoli/ember-app', function() {
           //expect(trees.inputTrees[0].inputTree.options.overwrite).to.equal(true);
         });
       });
-    });
-    describe('postprocessTree is called properly', function() {
-        var postprocessTreeStub;
-        beforeEach(function() {
-          builder = new Builder({
-            project: project
-          });
-
-          postprocessTreeStub = stub(builder, 'addonPostprocessTree', ['batman']);
-        });
-
-
-        it('styles calls addonTreesFor', function() {
-          builder.styles();
-
-          expect(postprocessTreeStub.calledWith[0][0]).to.equal('css');
-          //expect(postprocessTreeStub.calledWith[0][1].description).to.equal('styles', 'should be called with consolidated tree');
-        });
-    });
-    describe('toTree', function() {
-      beforeEach(function() {
-        addon = {
-          included: function() { },
-          treeFor: function() { },
-          postprocessTree: function() { }
-        };
-
-        project.initializeAddons = function() {
-          this.addons = [ addon ];
-        };
-
-        builder = new Builder({
-          project: project
-        });
-      });
-
-      it.skip('calls postProcessTree if defined', function() {
-        stub(builder, 'toArray', []);
-        stub(addon, 'postprocessTree', 'derp');
-
-        expect(builder.toTree()).to.equal('derp');
-      });
-
-      it.skip('calls addonPostprocessTree', function() {
-        stub(builder, 'toArray', []);
-        stub(builder, 'addonPostprocessTree', 'blap');
-
-        expect(builder.toTree()).to.equal('blap');
-      });
-
-      it.skip('calls each addon postprocessTree hook', function() {
-        stub(builder, '_processedTemplatesTree', 'x');
-        stub(addon, 'postprocessTree', 'blap');
-        expect(builder.toTree()).to.equal('blap');
-        expect(
-          addon.postprocessTree.calledWith.map(function(args){
-            return args[0];
-          }).sort()
-        ).to.deep.equal(['all', 'css', 'js', 'test']);
-      });
-
     });
 
     describe('isEnabled is called properly', function() {
