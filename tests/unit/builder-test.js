@@ -320,7 +320,6 @@ describe('broccoli/ember-app', function() {
         it('development', function() {
           process.env.EMBER_ENV = 'development';
           builder = new Builder({ project: project });
-
           expect(builder.project.addons.length).to.equal(5);
         });
 
