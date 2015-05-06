@@ -14,16 +14,21 @@
   "license": "MIT",
   "dependencies": {
     "broccoli-es3-safe-recast": "^2.0.0",
-    "broccoli-es6modules": "git://github.com/chadhietala/broccoli-es6modules.git#gen-dep-graph",
+    "broccoli-es6Modules": "git://github.com/chadhietala/broccoli-es6modules.git#gen-dep-graph",
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
+    "broccoli-stew": "^0.2.1",
     "broccoli-unwatched-tree": "^0.1.1",
     "ember-cli": "git://github.com/chadhietala/ember-cli.git#reexporter",
     "glob": "^5.0.5",
     "lodash-node": "^3.7.0"
   },
   "devDependencies": {
+    "broccoli": "^0.16.2",
+    "broccoli-filter": "^0.1.12",
+    "broccoli-merge-trees": "^0.2.1",
     "chai": "^2.3.0",
-    "mocha": "^2.2.4"
+    "mocha": "^2.2.4",
+    "walk-sync": "^0.1.3"
   }
 }
