@@ -46,7 +46,7 @@ describe.only('Acceptance: Builder', function() {
     expect(trees).to.be.an('array');
   });
 
-  it('addons should not override the comsuming applications files if the same file exists', function () {
+  it('addons should not override the consuming applications files if the same file exists', function () {
     builder = new Builder();
     var trees = builder.toTree();
     build = new broccoli.Builder(mergeTrees(trees));
