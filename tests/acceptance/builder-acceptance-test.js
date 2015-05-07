@@ -65,7 +65,7 @@ describe('Acceptance: Builder', function() {
     build = new broccoli.Builder(mergeTrees(trees));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
-      expect(files.indexOf('index.html') > -1).to.be.eql(true);
+      expect(files.indexOf('dummy/index.html') > -1).to.be.eql(true);
     });
   });
 
@@ -148,7 +148,7 @@ describe('Acceptance: Builder', function() {
     build = new broccoli.Builder(mergeTrees(trees));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
-      expect(files.indexOf('dummy/app/styles/foo.css') > -1).to.eql(true);
+      expect(files.indexOf('dummy/styles/foo.css') > -1).to.eql(true);
     });
   });
 
@@ -158,7 +158,7 @@ describe('Acceptance: Builder', function() {
     build = new broccoli.Builder(mergeTrees(trees));
     return build.build().then(function(results) {
       var expected = fs.readFileSync(path.resolve('..', '..', 'expectations/styles/foo.css'), 'utf8');
-      var assertion = fs.readFileSync(results.directory + '/dummy/app/styles/foo.css', 'utf8');
+      var assertion = fs.readFileSync(results.directory + '/dummy/styles/foo.css', 'utf8');
       expect(expected).to.eql(assertion);
     });
   });
