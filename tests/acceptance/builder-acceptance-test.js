@@ -78,7 +78,7 @@ describe('Acceptance: Builder', function() {
       var folders = files.filter(function(item) {
         return item.slice(-1) === '/' && item.split('/').length === 2;
       });
-      expect(folders).to.deep.eql(['dummy/', 'dummy-tests/', 'ember-cli-ember/']);
+      expect(folders).to.deep.eql(['__packager__/', 'dummy/', 'dummy-tests/', 'ember-cli-ember/']);
     });
   });
 
