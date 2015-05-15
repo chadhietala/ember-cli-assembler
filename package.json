@@ -4,8 +4,9 @@
   "description": "",
   "main": "lib/builder.js",
   "scripts": {
-    "test": "mocha -R spec tests/**/*-test.js",
-    "test:debug": "mocha debug -R spec tests/**/*-test.js"
+    "test": "node tests/runner.js",
+    "test:debug": "node debug tests/runner.js",
+    "test:cover": "istanbul cover tests/runner.js"
   },
   "keywords": [
     "ember-cli"
@@ -28,6 +29,9 @@
     "broccoli-filter": "^0.1.12",
     "broccoli-merge-trees": "^0.2.1",
     "chai": "^2.3.0",
+    "coveralls": "^2.11.2",
+    "glob": "^5.0.6",
+    "istanbul": "^0.3.14",
     "mocha": "^2.2.4",
     "walk-sync": "^0.1.3"
   }
