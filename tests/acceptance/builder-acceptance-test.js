@@ -30,7 +30,6 @@ describe('Acceptance: Builder', function() {
     }
     
     if (build) {
-      debugger;
       return build.cleanup();
     }
   });
