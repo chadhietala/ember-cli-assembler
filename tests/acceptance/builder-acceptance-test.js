@@ -30,6 +30,7 @@ describe('Acceptance: Builder', function() {
     }
     
     if (build) {
+      debugger;
       return build.cleanup();
     }
   });
@@ -78,7 +79,7 @@ describe('Acceptance: Builder', function() {
       var folders = files.filter(function(item) {
         return item.slice(-1) === '/' && item.split('/').length === 2;
       });
-      expect(folders).to.deep.eql(['__packager__/', 'dummy/', 'dummy-tests/', 'ember-cli-ember/']);
+      expect(folders).to.deep.eql(['__packager__/', 'dummy/', 'ember-cli-ember/']);
     });
   });
 
@@ -100,11 +101,11 @@ describe('Acceptance: Builder', function() {
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
       var expectactions = [
-        'dummy-tests/',
-        'dummy-tests/dep-graph.json',
-        'dummy-tests/unit/',
-        'dummy-tests/unit/components/',
-        'dummy-tests/unit/components/foo-bar-test.js'
+        'dummy/tests/',
+        'dummy/tests/dep-graph.json',
+        'dummy/tests/unit/',
+        'dummy/tests/unit/components/',
+        'dummy/tests/unit/components/foo-bar-test.js'
       ];
       expect(builder.env).to.eql('development');
       expectactions.forEach(function(file) {
@@ -119,7 +120,7 @@ describe('Acceptance: Builder', function() {
     build = new broccoli.Builder(mergeTrees(trees));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
-      expect(files.indexOf('dummy-tests/index.html') > -1).to.eql(true);
+      expect(files.indexOf('dummy/tests/index.html') > -1).to.eql(true);
     });
   });
 
