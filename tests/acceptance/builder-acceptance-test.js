@@ -69,7 +69,7 @@ describe('Acceptance: Builder', function() {
     });
   });
 
-  it('should include the addon directory', function () {
+  it('should include ember from the addon directory', function () {
     builder = new Builder();
     var trees = builder.toTree();
     build = new broccoli.Builder(mergeTrees(trees));
@@ -78,7 +78,9 @@ describe('Acceptance: Builder', function() {
       var folders = files.filter(function(item) {
         return item.slice(-1) === '/' && item.split('/').length === 2;
       });
-      expect(folders).to.deep.eql(['__packager__/', 'dummy/', 'ember-cli-ember/']);
+
+      expect(files.indexOf('ember.js') > 0).to.eql(true);
+      expect(folders).to.deep.eql(['__packager__/', 'dummy/']);
     });
   });
 
