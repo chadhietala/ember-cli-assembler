@@ -23,7 +23,8 @@
     "clean-base-url": "^1.0.0",
     "ember-cli": "git://github.com/chadhietala/ember-cli.git#reexporter",
     "glob": "^5.0.5",
-    "lodash-node": "^3.7.0"
+    "lodash-node": "^3.7.0",
+    "silent-error": "^1.0.0"
   },
   "devDependencies": {
     "broccoli": "^0.16.2",
