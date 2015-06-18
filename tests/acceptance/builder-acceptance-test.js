@@ -49,7 +49,7 @@ describe('Acceptance: Builder', function() {
   it('addons should not override the consuming applications files if the same file exists', function () {
     builder = new Builder();
     var trees = builder.toTree();
-    build = new broccoli.Builder(mergeTrees(trees));
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var basePath = path.join(results.directory, 'dummy/components');
       var containsAddon = fs.readFileSync(path.join(basePath, 'foo-bar.js'), 'utf8').indexOf('fromAddon') > -1;
@@ -62,17 +62,27 @@ describe('Acceptance: Builder', function() {
   it('should have the index.html', function() {
     builder = new Builder();
     var trees = builder.toTree();
-    build = new broccoli.Builder(mergeTrees(trees));
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
       expect(files.indexOf('dummy/index.html') > -1).to.be.eql(true);
     });
   });
 
+  it('should contain a dep-graph.json per tree', function() {
+    builder = new Builder();
+    var trees = builder.toTree();
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
+    return build.build().then(function(results) {
+      var files = walkSync(results.directory);
+      expect(files.indexOf('dep-graph.json') > -1).to.be.eql(true);
+    });
+  });
+
   it('should include ember from the addon directory', function () {
     builder = new Builder();
     var trees = builder.toTree();
-    build = new broccoli.Builder(mergeTrees(trees));
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
       var folders = files.filter(function(item) {
@@ -87,7 +97,7 @@ describe('Acceptance: Builder', function() {
   it('should preprocess templates with an installed pre-processor', function () {
     builder = new Builder();
     var trees = builder.toTree();
-    build = new broccoli.Builder(mergeTrees(trees));
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var expected = fs.readFileSync(path.resolve('..', '..', 'expectations/templates/application.js'), 'utf8');
       var assertion = fs.readFileSync(results.directory + '/dummy/templates/application.js', 'utf8');
@@ -98,16 +108,19 @@ describe('Acceptance: Builder', function() {
   it('should contain tests if environment is development', function () {
     builder = new Builder();
     var trees = builder.toTree();
-    build = new broccoli.Builder(mergeTrees(trees));
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
+
       var expectactions = [
         'dummy/tests/',
-        'dummy/tests/dep-graph.json',
+        'dummy/tests/index.html',
+        'dummy/tests/testem.js',
         'dummy/tests/unit/',
         'dummy/tests/unit/components/',
-        'dummy/tests/unit/components/foo-bar-test.js'
+        'dummy/tests/unit/components/foo-bar-test.js',
       ];
+
       expect(builder.env).to.eql('development');
       expectactions.forEach(function(file) {
         expect(files.indexOf(file) > -1).to.eql(true);
@@ -118,7 +131,7 @@ describe('Acceptance: Builder', function() {
   it('should contain the test index', function() {
     builder = new Builder();
     var trees = builder.toTree();
-    build = new broccoli.Builder(mergeTrees(trees));
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
       expect(files.indexOf('dummy/tests/index.html') > -1).to.eql(true);
@@ -128,7 +141,7 @@ describe('Acceptance: Builder', function() {
   it('should not contain tests from the addon', function () {
     builder = new Builder();
     var trees = builder.toTree();
-    build = new broccoli.Builder(mergeTrees(trees));
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
       var expectactions = [
@@ -147,7 +160,7 @@ describe('Acceptance: Builder', function() {
   it('should include styles', function() {
     builder = new Builder();
     var trees = builder.toTree();
-    build = new broccoli.Builder(mergeTrees(trees));
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
       expect(files.indexOf('dummy/styles/foo.css') > -1).to.eql(true);
@@ -157,7 +170,7 @@ describe('Acceptance: Builder', function() {
   it('styles should have gone through the preprocessor', function() {
     builder = new Builder();
     var trees = builder.toTree();
-    build = new broccoli.Builder(mergeTrees(trees));
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var expected = fs.readFileSync(path.resolve('..', '..', 'expectations/styles/foo.css'), 'utf8');
       var assertion = fs.readFileSync(results.directory + '/dummy/styles/foo.css', 'utf8');
