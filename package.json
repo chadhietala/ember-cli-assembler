@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "broccoli-es3-safe-recast": "^2.0.0",
-    "broccoli-es6Modules": "git://github.com/chadhietala/broccoli-es6modules.git#gen-dep-graph",
+    "broccoli-babel-transpiler": "git://github.com/chadhietala/broccoli-babel-transpiler#dep-export",
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
     "broccoli-stew": "^0.2.1",

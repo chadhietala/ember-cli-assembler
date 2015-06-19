@@ -1,7 +1,7 @@
-define('dummy/templates/application', ['exports', 'ember'], function (exports, Ember) {
+define("dummy/templates/application", ["exports", "ember"], function (exports, _ember) {
+  "use strict";
 
-	'use strict';
-
-	exports['default'] = Ember['default'].HypeBars.template("HYPE HYPE HYPE");
-
+  var foo = "foo";
+  exports.foo = foo;
+  exports["default"] = _ember["default"].HypeBars.template("HYPE HYPE HYPE");
 });
