@@ -19,7 +19,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@scoped/ember-scoped-legacy": "2.0.0",
+    "@scoped/ember-scoped": "2.0.0",
     "ember-cli-ember": "2.0.0",
+    "ember-cli-current-addon": "2.0.0",
     "ember-cli-hypebars": "9.0.0",
     "ember-cli-sextant": "1.0.0"
   }

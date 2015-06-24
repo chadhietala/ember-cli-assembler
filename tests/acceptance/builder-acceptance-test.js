@@ -8,6 +8,12 @@ var mergeTrees = require('broccoli-merge-trees');
 var fs = require('fs');
 var walkSync = require('walk-sync');
 
+function verifyFiles(files, expected) {
+  expected.forEach(function(file) {
+    expect(files.indexOf(file) > -1).to.be.ok;
+  });
+}
+
 describe('Acceptance: Builder', function() {
   var cwd = process.cwd(),
       dummy = path.join(cwd, 'tests', 'fixtures', 'dummy'),
@@ -79,6 +85,43 @@ describe('Acceptance: Builder', function() {
     });
   });
 
+  it('should allow for both addon structures', function() {
+    builder = new Builder();
+    var trees = builder.toTree();
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
+    return build.build().then(function(results) {
+      var files = walkSync(results.directory).filter(function(relativePath) { 
+        return relativePath.slice(-1) !== '/';
+      });
+
+      var newAddonStructure = ['ember.js', 'ember/resolver.js'];
+      var newScopedAddonStructure = [
+        '@scoped/some-other-package/bizz.js',
+        '@scoped/some-other-package/helpers/t.js',
+        '@scoped/some-other-package.js',
+        '@scoped/some-package/helpers/t.js',
+        '@scoped/some-package/bizz.js',
+        '@scoped/some-package.js'
+      ];
+      var legacyAddonStructure = [
+        'ember-cli-current-addon/ember-cli-current-addon.js',
+        'ember-cli-current-addon/foo.js',
+        'ember-cli-current-addon/index.js'
+      ];
+      var legacyScopedStructure = [
+        '@scoped/ember-scoped-legacy.js',
+        '@scoped/ember-scoped-legacy/index.js',
+        '@scoped/ember-scoped-legacy/helpers/foo.js'
+      ];
+
+      verifyFiles(files, newAddonStructure);
+      verifyFiles(files, newScopedAddonStructure);
+      verifyFiles(files, legacyAddonStructure);
+      verifyFiles(files, legacyScopedStructure);
+
+    });
+  });
+
   it('should include ember from the addon directory', function () {
     builder = new Builder();
     var trees = builder.toTree();
@@ -90,7 +133,7 @@ describe('Acceptance: Builder', function() {
       });
 
       expect(files.indexOf('ember.js') > 0).to.eql(true);
-      expect(folders).to.deep.eql(['__packager__/', 'dummy/']);
+      expect(folders).to.deep.eql(['@scoped/', '__packager__/', 'dummy/', 'ember/', 'ember-cli-current-addon/']);
     });
   });
 

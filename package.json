@@ -14,15 +14,16 @@
   "author": "Chad Hietala, Stefan Penner and Ember CLI Contributors",
   "license": "MIT",
   "dependencies": {
-    "broccoli-es3-safe-recast": "^2.0.0",
-    "broccoli-babel-transpiler": "^5.2.2",
     "amd-name-resolver": "git://github.com/chadhietala/amd-name-resolver",
+    "broccoli-babel-transpiler": "^5.2.2",
+    "broccoli-es3-safe-recast": "^2.0.0",
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "^0.2.1",
     "broccoli-stew": "^0.2.1",
     "broccoli-unwatched-tree": "^0.1.1",
     "clean-base-url": "^1.0.0",
     "ember-cli": "git://github.com/chadhietala/ember-cli.git#reexporter",
+    "fs-extra": "^0.20.1",
     "glob": "^5.0.5",
     "lodash-node": "^3.7.0",
     "silent-error": "^1.0.0"
