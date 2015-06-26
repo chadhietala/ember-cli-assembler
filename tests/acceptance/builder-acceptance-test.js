@@ -113,16 +113,30 @@ describe('Acceptance: Builder', function() {
         '@scoped/ember-scoped-legacy/index.js',
         '@scoped/ember-scoped-legacy/helpers/foo.js'
       ];
+      var noReexportNewStructure = [
+        'no-reexport-new-structure/fizz.js',
+        'no-reexport-new-structure/structure/fizz.js'
+      ];
+      var legacyWithoutReexport = [
+        'legacy-without-reexport/filters/jobs.js',
+        'legacy-without-reexport/foo.js'
+      ];
+      var legacyScopedWithoutReexport = [
+        '@scoped/scoped-legacy-without-reexport/fizz.js',
+        '@scoped/scoped-legacy-without-reexport/helpers/boo.js'
+      ];
 
+      verifyFiles(files, legacyScopedWithoutReexport);
       verifyFiles(files, newAddonStructure);
       verifyFiles(files, newScopedAddonStructure);
       verifyFiles(files, legacyAddonStructure);
       verifyFiles(files, legacyScopedStructure);
-
+      verifyFiles(files, noReexportNewStructure);
+      verifyFiles(files, legacyWithoutReexport);
     });
   });
 
-  it.only('should include ember from the addon directory', function () {
+  it('should include ember from the addon directory', function () {
     builder = new Builder();
     var trees = builder.toTree();
     build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
@@ -131,8 +145,6 @@ describe('Acceptance: Builder', function() {
       var folders = files.filter(function(item) {
         return item.slice(-1) === '/' && item.split('/').length === 2;
       });
-
-      console.log(files);
 
       expect(files.indexOf('ember.js') > 0).to.eql(true);
       expect(folders).to.deep.eql([
