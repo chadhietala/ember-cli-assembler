@@ -24,8 +24,8 @@
     "clean-base-url": "^1.0.0",
     "ember-cli": "git://github.com/chadhietala/ember-cli.git#reexporter",
     "fs-extra": "^0.20.1",
-    "glob": "^5.0.5",
     "lodash-node": "^3.7.0",
+    "minimatch": "^2.0.8",
     "silent-error": "^1.0.0"
   },
   "devDependencies": {
@@ -34,7 +34,7 @@
     "broccoli-merge-trees": "^0.2.1",
     "chai": "^2.3.0",
     "coveralls": "^2.11.2",
-    "glob": "^5.0.6",
+    "glob": "^5.0.10",
     "istanbul": "^0.3.14",
     "mocha": "^2.2.4",
     "walk-sync": "^0.1.3"
