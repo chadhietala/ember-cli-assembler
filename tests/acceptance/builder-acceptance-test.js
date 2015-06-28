@@ -104,7 +104,7 @@ describe('Acceptance: Builder', function() {
         '@scoped/some-package.js'
       ];
       var legacyAddonStructure = [
-        'ember-cli-current-addon/ember-cli-current-addon.js',
+        'ember-cli-current-addon.js',
         'ember-cli-current-addon/foo.js',
         'ember-cli-current-addon/index.js'
       ];
