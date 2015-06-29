@@ -1,8 +1,8 @@
 {
-  "name": "ember-cli-builder",
+  "name": "ember-cli-assembler",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/builder.js",
+  "main": "lib/assembler.js",
   "scripts": {
     "test": "node tests/runner.js",
     "test:debug": "node debug tests/runner.js",
