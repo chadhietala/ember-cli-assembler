@@ -1,15 +1,15 @@
 /* global escape */
 'use strict';
 
-var fs       = require('fs');
-var path     = require('path');
-var Project  = require('ember-cli/lib/models/project');
-var Builder  = require('../../lib/builder');
-var expect   = require('chai').expect;
-var stub     = require('ember-cli/tests/helpers/stub').stub;
+var fs        = require('fs');
+var path      = require('path');
+var Project   = require('ember-cli/lib/models/project');
+var Assembler = require('../../lib/assembler');
+var expect    = require('chai').expect;
+var stub      = require('ember-cli/tests/helpers/stub').stub;
 
-describe('broccoli/ember-app', function() {
-  var project, projectPath, builder, addonTreesForStub, addon;
+describe('assembler', function() {
+  var project, projectPath, assembler, addonTreesForStub, addon;
 
   function setupProject(rootPath) {
     var packageContents = require(path.join(rootPath, 'package.json'));
@@ -34,7 +34,7 @@ describe('broccoli/ember-app', function() {
     it('should override project.configPath if configPath option is specified', function() {
       project.configPath = function() { return 'original value'; };
 
-      new Builder({
+      new Assembler({
         project: project,
         configPath: 'custom config path'
       });
@@ -49,7 +49,7 @@ describe('broccoli/ember-app', function() {
       });
 
       it('should set the app on the addons', function() {
-        var app = new Builder({
+        var app = new Assembler({
           project: project
         });
 
@@ -66,7 +66,7 @@ describe('broccoli/ember-app', function() {
       project._addonsInitialized = true;
       project.addons = [];
 
-      builder = new Builder({
+      assembler = new Assembler({
         project: project
       });
 
@@ -90,7 +90,7 @@ describe('broccoli/ember-app', function() {
           }
         });
 
-        var actual = builder.contentFor(config, defaultMatch, 'foo');
+        var actual = assembler.contentFor(config, defaultMatch, 'foo');
 
         expect(calledConfig).to.deep.equal(config);
         expect(calledType).to.equal('foo');
@@ -110,7 +110,7 @@ describe('broccoli/ember-app', function() {
           }
         });
 
-        var actual = builder.contentFor(config, defaultMatch, 'foo');
+        var actual = assembler.contentFor(config, defaultMatch, 'foo');
 
         expect(actual).to.equal('blammo\nblahzorz');
       });
@@ -121,18 +121,18 @@ describe('broccoli/ember-app', function() {
         var escapedConfig = escape(JSON.stringify(config));
         var metaExpected = '<meta name="cool-foo/config/environment" ' +
                            'content="' + escapedConfig + '" />';
-        var actual = builder.contentFor(config, defaultMatch, 'head');
+        var actual = assembler.contentFor(config, defaultMatch, 'head');
 
         expect(true, actual.indexOf(metaExpected) > -1);
       });
 
       it('does not include the `meta` tag in `head` if storeConfigInMeta is false', function() {
-        builder.options.storeConfigInMeta = false;
+        assembler.options.storeConfigInMeta = false;
 
         var escapedConfig = escape(JSON.stringify(config));
         var metaExpected = '<meta name="cool-foo/config/environment" ' +
                            'content="' + escapedConfig + '" />';
-        var actual = builder.contentFor(config, defaultMatch, 'head');
+        var actual = assembler.contentFor(config, defaultMatch, 'head');
 
         expect(true, actual.indexOf(metaExpected) === -1);
       });
@@ -141,7 +141,7 @@ describe('broccoli/ember-app', function() {
         config.locationType = 'auto';
         config.baseURL = '/';
         var expected = '<base href="/" />';
-        var actual = builder.contentFor(config, defaultMatch, 'head');
+        var actual = assembler.contentFor(config, defaultMatch, 'head');
 
         expect(true, actual.indexOf(expected) > -1);
       });
@@ -150,7 +150,7 @@ describe('broccoli/ember-app', function() {
         config.locationType = 'none';
         config.baseURL = '/';
         var expected = '<base href="/" />';
-        var actual = builder.contentFor(config, defaultMatch, 'head');
+        var actual = assembler.contentFor(config, defaultMatch, 'head');
 
         expect(true, actual.indexOf(expected) > -1);
       });
@@ -159,7 +159,7 @@ describe('broccoli/ember-app', function() {
         config.locationType = 'hash';
         config.baseURL = '/foo/bar';
         var expected = '<base href="/foo/bar/" />';
-        var actual = builder.contentFor(config, defaultMatch, 'head');
+        var actual = assembler.contentFor(config, defaultMatch, 'head');
 
         expect(true, actual.indexOf(expected) === -1);
       });
@@ -169,25 +169,25 @@ describe('broccoli/ember-app', function() {
       it('includes the meta gathering snippet by default', function() {
         var expected = fs.readFileSync('./node_modules/ember-cli/lib/broccoli/app-config-from-meta.js', 'utf8');
 
-        var actual = builder.contentFor(config, defaultMatch, 'config-module');
+        var actual = assembler.contentFor(config, defaultMatch, 'config-module');
 
         expect(true, actual.indexOf(expected) > -1);
       });
 
       it('includes the raw config if storeConfigInMeta is false', function() {
-        builder.options.storeConfigInMeta = false;
+        assembler.options.storeConfigInMeta = false;
 
         var expected = JSON.stringify(config);
-        var actual = builder.contentFor(config, defaultMatch, 'config-module');
+        var actual = assembler.contentFor(config, defaultMatch, 'config-module');
 
         expect(true, actual.indexOf(expected) > -1);
       });
     });
 
     it('has no default value other than `head`', function() {
-      expect(builder.contentFor(config, defaultMatch, 'foo')).to.equal('');
-      expect(builder.contentFor(config, defaultMatch, 'body')).to.equal('');
-      expect(builder.contentFor(config, defaultMatch, 'blah')).to.equal('');
+      expect(assembler.contentFor(config, defaultMatch, 'foo')).to.equal('');
+      expect(assembler.contentFor(config, defaultMatch, 'body')).to.equal('');
+      expect(assembler.contentFor(config, defaultMatch, 'blah')).to.equal('');
     });
   });
 
@@ -206,12 +206,12 @@ describe('broccoli/ember-app', function() {
           this.addons = [ addon ];
         };
 
-        builder = new Builder({
+        assembler = new Assembler({
           project: project
         });
 
         expect(true, called);
-        expect(passedApp).to.equal(builder);
+        expect(passedApp).to.equal(assembler);
       });
 
       it('does not throw an error if the addon does not implement `included`', function() {
@@ -222,7 +222,7 @@ describe('broccoli/ember-app', function() {
         };
 
         expect(function() {
-          builder = new Builder({
+          assembler = new Assembler({
             project: project
           });
         }).to.not.throw(/addon must implement the `included`/);
@@ -243,15 +243,15 @@ describe('broccoli/ember-app', function() {
       });
 
       it('addonTreesFor returns an empty array if no addons return a tree', function() {
-        builder = new Builder({
+        assembler = new Assembler({
           project: project
         });
 
-        expect(builder.addonTreesFor('blah')).to.deep.equal([]);
+        expect(assembler.addonTreesFor('blah')).to.deep.equal([]);
       });
 
       it('addonTreesFor calls treesFor on the addon', function() {
-        builder = new Builder({
+        assembler = new Assembler({
           project: project
         });
 
@@ -264,44 +264,53 @@ describe('broccoli/ember-app', function() {
           return 'blazorz';
         };
 
-        expect(builder.addonTreesFor('blah')).to.deep.equal(['blazorz']);
+        expect(assembler.addonTreesFor('blah')).to.deep.equal(['blazorz']);
         expect(actualTreeName).to.equal('blah');
       });
 
       it('addonTreesFor does not throw an error if treeFor is not defined', function() {
         delete addon.treeFor;
 
-        builder = new Builder({
+        assembler = new Assembler({
           project: project
         });
 
         expect(function() {
-          builder.addonTreesFor('blah');
+          assembler.addonTreesFor('blah');
         }).not.to.throw(/addon must implement the `treeFor`/);
       });
 
       describe('addonTreesFor is called properly', function() {
         beforeEach(function() {
-          builder = new Builder({
+          assembler = new Assembler({
             project: project
           });
 
-          addonTreesForStub = stub(builder, 'addonTreesFor', ['batman']);
+          addonTreesForStub = stub(assembler, 'addonTreesFor', ['batman']);
         });
 
         it('_processedAppTree calls addonTreesFor', function() {
-          builder._processedAppTree();
+          assembler._processedAppTree();
 
           expect(addonTreesForStub.calledWith[0][0]).to.equal('app');
         });
 
         it('styles calls addonTreesFor and merges with overwrite', function() {
-          builder.styles();
+          assembler.styles();
 
           expect(addonTreesForStub.calledWith[0][0]).to.equal('styles');
           //expect(true, trees.inputTrees[0].inputTree.inputTrees.indexOf('batman') !== -1, 'contains addon tree');
           //expect(trees.inputTrees[0].inputTree.options.overwrite).to.equal(true);
         });
+      });
+    });
+
+    describe('import', function() {
+      it('creates a legacy tree', function() {
+        assembler = new Assembler({
+        });
+        assembler.import('vendor/moment.js', {type: 'vendor', exports: { moment: ['default'] } });
+        expect(assembler.legacyImports.length).to.eql(1);
       });
     });
 
@@ -319,15 +328,15 @@ describe('broccoli/ember-app', function() {
       describe('with environment', function() {
         it('development', function() {
           process.env.EMBER_ENV = 'development';
-          builder = new Builder({ project: project });
-          expect(builder.project.addons.length).to.equal(5);
+          assembler = new Assembler({ project: project });
+          expect(assembler.project.addons.length).to.equal(5);
         });
 
         it('foo', function() {
           process.env.EMBER_ENV = 'foo';
-          builder = new Builder({ project: project });
+          assembler = new Assembler({ project: project });
 
-          expect(builder.project.addons.length).to.equal(6);
+          expect(assembler.project.addons.length).to.equal(6);
         });
       });
 
