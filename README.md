@@ -1,6 +1,6 @@
 # Ember CLI Assembler
 
-[![Build Status][travis-badge]][travis-badge-url] [![Coverage Status](https://coveralls.io/repos/chadhietala/ember-cli-assembler/badge.svg?branch=coveralls)](https://coveralls.io/r/chadhietala/ember-cli-assembler?branch=coveralls)
+[![Build Status][travis-badge]][travis-badge-url] [![Coverage Status](https://coveralls.io/repos/chadhietala/ember-cli-assembler/badge.svg?branch=master&service=github)](https://coveralls.io/github/chadhietala/ember-cli-assembler?branch=master)
 
 ## Goal
 The Ember CLI Assembler is the first step in the Packaging phase of an Ember CLI application. It's goal is primarily to build all of the addons and app, and pass an array of trees to the [Linker](https://github.com/chadhietala/ember-cli-linker).
