@@ -28,6 +28,7 @@
     "exists-sync": "0.0.3",
     "fs-extra": "^0.20.1",
     "lodash-node": "^3.7.0",
+    "merge-defaults": "^0.2.1",
     "minimatch": "^2.0.8",
     "silent-error": "^1.0.0",
     "walk-sync": "^0.1.3"

@@ -7,6 +7,7 @@ var Project   = require('ember-cli/lib/models/project');
 var Assembler = require('../../lib/assembler');
 var expect    = require('chai').expect;
 var stub      = require('ember-cli/tests/helpers/stub').stub;
+var amdNameResolver = require('amd-name-resolver');
 
 describe('assembler', function() {
   var project, projectPath, assembler, addonTreesForStub, addon;
@@ -191,6 +192,46 @@ describe('assembler', function() {
     });
   });
 
+  describe('_mergeBabelOptions', function() {
+    it('should return the default options', function() {
+      assembler = new Assembler({
+        project: project
+      });
+
+      assembler._mergeBabelOptions();
+
+      expect(assembler.babelOptions).to.deep.eql({
+        exportModuleMetadata: true,
+        moduleIds: true,
+        modules: 'amdStrict',
+        resolveModuleSource: amdNameResolver,
+        sourceMaps: true
+      });
+    });
+
+    it('should merge user options with defaults', function() {
+      assembler = new Assembler({
+        project: project,
+        babel: {
+          nonStandard: false,
+          whitelist: ['es7.asyncFunctions', 'es7.decorators']
+        }
+      });
+
+      assembler._mergeBabelOptions();
+
+      expect(assembler.babelOptions).to.deep.eql({
+        exportModuleMetadata: true,
+        moduleIds: true,
+        modules: 'amdStrict',
+        nonStandard: false,
+        resolveModuleSource: amdNameResolver,
+        sourceMaps: true,
+        whitelist: ['es7.asyncFunctions', 'es7.decorators']
+      });
+    });
+  });
+
   describe('addons', function() {
     describe('included hook', function() {
       it('included hook is called properly on instantiation', function() {
@@ -339,7 +380,6 @@ describe('assembler', function() {
           expect(assembler.project.addons.length).to.equal(6);
         });
       });
-
     });
   });
 });
