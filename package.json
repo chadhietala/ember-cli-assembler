@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "amd-name-resolver": "git://github.com/chadhietala/amd-name-resolver",
-    "broccoli-babel-transpiler": "^5.3.0",
+    "broccoli-babel-transpiler": "^5.3.1",
     "broccoli-es3-safe-recast": "^2.0.0",
     "broccoli-funnel": "^0.2.3",
     "broccoli-merge-trees": "git://github.com/chadhietala/broccoli-merge-trees#stable-paths",
