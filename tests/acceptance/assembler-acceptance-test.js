@@ -53,13 +53,12 @@ describe('Acceptance: Assembler', function() {
     expect(cache instanceof Cache).to.eql(true);
   });
 
-  it.only('addons should not override the consuming applications files if the same file exists', function () {
+  it('addons should not override the consuming applications files if the same file exists', function () {
     assembler = new Assembler();
     var cache = assembler.assemble();
-    var trees = cache.treesByType('app');
-    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
+    var tree = cache.get('dummy').trees.app;
+    build = new broccoli.Builder(tree);
     return build.build().then(function(results) {
-      console.log(walkSync(results.directory))
       var basePath = path.join(results.directory, 'dummy/components');
       var containsAddon = fs.readFileSync(path.join(basePath, 'foo-bar.js'), 'utf8').indexOf('fromAddon') > -1;
       expect(!containsAddon).to.eql(true);
