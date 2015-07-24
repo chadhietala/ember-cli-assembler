@@ -298,7 +298,7 @@ describe('assembler', function() {
 
         var sampleAddon = project.addons[0];
         var actualTreeName;
-
+//
         sampleAddon.treeFor = function(name) {
           actualTreeName = name;
 
@@ -340,8 +340,7 @@ describe('assembler', function() {
           assembler.styles();
 
           expect(addonTreesForStub.calledWith[0][0]).to.equal('styles');
-          //expect(true, trees.inputTrees[0].inputTree.inputTrees.indexOf('batman') !== -1, 'contains addon tree');
-          //expect(trees.inputTrees[0].inputTree.options.overwrite).to.equal(true);
+          expect(assembler.cache.treesByType('styles')[0].inputTree.inputTree.inputTrees[0]).to.eql('batman');
         });
       });
     });
