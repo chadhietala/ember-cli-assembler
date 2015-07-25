@@ -25,6 +25,7 @@
     "clean-base-url": "^1.0.0",
     "ember-cli": "git://github.com/chadhietala/ember-cli.git#reexporter",
     "ember-cli-preprocess-registry": "^1.0.2",
+    "ember-cli-tree-descriptor": "0.0.2",
     "exists-sync": "0.0.3",
     "fs-extra": "^0.20.1",
     "lodash-node": "^3.7.0",

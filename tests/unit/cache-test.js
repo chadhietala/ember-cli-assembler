@@ -1,7 +1,7 @@
 'use strict';
 
 var Cache = require('../../lib/cache');
-var TreeDescriptor = require('../../lib/models/tree-descriptor');
+var TreeDescriptor = require('ember-cli-tree-descriptor');
 var expect = require('chai').expect;
 
 describe('descriptor cache', function() {
