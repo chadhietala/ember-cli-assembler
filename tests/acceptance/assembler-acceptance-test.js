@@ -168,7 +168,6 @@ describe('Acceptance: Assembler', function() {
       var expectactions = [
         'dummy/',
         'dummy/tests/',
-        'dummy/tests/testem.js',
         'dummy/tests/index.html',
         'dummy/tests/test-support/',
         'dummy/tests/test-support/some-test-thing.js',
