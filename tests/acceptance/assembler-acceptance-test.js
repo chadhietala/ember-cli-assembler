@@ -75,8 +75,8 @@ describe('Acceptance: Assembler', function() {
     build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
-      expect(files.indexOf('dummy/index.html') > -1).to.be.eql(true);
-      expect(files.indexOf('dummy/tests/index.html') > -1).to.be.eql(true);
+      expect(files.indexOf('index.html') > -1).to.be.eql(true);
+      expect(files.indexOf('tests/index.html') > -1).to.be.eql(true);
     });
   });
 
@@ -157,7 +157,68 @@ describe('Acceptance: Assembler', function() {
     });
   });
 
-  it('should contain tests and test support', function () {
+  it('should contain test support', function() {
+    assembler = new Assembler();
+    var cache = assembler.assemble();
+    var trees = cache.treesByType('test-support');
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
+    return build.build().then(function(results) {
+      var files = walkSync(results.directory);
+      var expectactions = [
+        'test-support/',
+        'test-support/some-test-thing.js'
+      ];
+
+      expect(assembler.env).to.eql('development');
+      expectactions.forEach(function(file) {
+        expect(files.indexOf(file) > -1).to.eql(true);
+      });
+    });
+  });
+
+  it('should contain packager files', function() {
+    assembler = new Assembler();
+    var cache = assembler.assemble();
+    var trees = cache.treesByType('packager');
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
+    return build.build().then(function(results) {
+      var files = walkSync(results.directory);
+      var expectactions = [
+        '__packager__/',
+        '__packager__/app-boot.js',
+        '__packager__/app-prefix.js',
+        '__packager__/app-suffix.js',
+        '__packager__/test-support-prefix.js',
+        '__packager__/test-support-suffix.js',
+        '__packager__/vendor-prefix.js',
+        '__packager__/vendor-suffix.js'
+      ];
+
+      expectactions.forEach(function(file) {
+        expect(files.indexOf(file) > -1).to.eql(true);
+      });
+    });
+  });
+
+  it('should contain public files', function() {
+    assembler = new Assembler();
+    var cache = assembler.assemble();
+    var trees = cache.treesByType('public');
+    build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
+    return build.build().then(function(results) {
+      var files = walkSync(results.directory);
+      var expectactions = [
+        'dummy/',
+        'dummy/robots.txt'
+      ];
+
+      expectactions.forEach(function(file) {
+        expect(files.indexOf(file) > -1).to.eql(true);
+      });
+    });
+  });
+
+  it('should contain tests', function () {
     assembler = new Assembler();
     var cache = assembler.assemble();
     var trees = cache.treesByType('tests');
@@ -166,11 +227,9 @@ describe('Acceptance: Assembler', function() {
       var files = walkSync(results.directory);
 
       var expectactions = [
+        'dep-graph.json',
         'dummy/',
         'dummy/tests/',
-        'dummy/tests/index.html',
-        'dummy/tests/test-support/',
-        'dummy/tests/test-support/some-test-thing.js',
         'dummy/tests/unit/',
         'dummy/tests/unit/components/',
         'dummy/tests/unit/components/foo-bar-test.js'
