@@ -298,7 +298,7 @@ describe('assembler', function() {
 
         var sampleAddon = project.addons[0];
         var actualTreeName;
-//
+
         sampleAddon.treeFor = function(name) {
           actualTreeName = name;
 
@@ -340,7 +340,7 @@ describe('assembler', function() {
           assembler.styles();
 
           expect(addonTreesForStub.calledWith[0][0]).to.equal('styles');
-          expect(assembler.cache.treesByType('styles')[0].inputTree.inputTree.inputTrees[0]).to.eql('batman');
+          expect(assembler.cache.treesByType('styles')[0].inputTree.inputTrees[0]).to.eql('batman');
         });
       });
     });

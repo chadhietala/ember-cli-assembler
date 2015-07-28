@@ -208,8 +208,7 @@ describe('Acceptance: Assembler', function() {
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
       var expectactions = [
-        'dummy/',
-        'dummy/robots.txt'
+        'robots.txt'
       ];
 
       expectactions.forEach(function(file) {
@@ -269,7 +268,7 @@ describe('Acceptance: Assembler', function() {
     build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
-      expect(files.indexOf('dummy/styles/foo.css') > -1).to.eql(true);
+      expect(files.indexOf('foo.css') > -1).to.eql(true);
     });
   });
 
@@ -280,7 +279,7 @@ describe('Acceptance: Assembler', function() {
     build = new broccoli.Builder(mergeTrees(trees, { overwrite: true }));
     return build.build().then(function(results) {
       var expected = fs.readFileSync(path.resolve('..', '..', 'expectations/styles/foo.css'), 'utf8');
-      var assertion = fs.readFileSync(results.directory + '/dummy/styles/foo.css', 'utf8');
+      var assertion = fs.readFileSync(results.directory + '/foo.css', 'utf8');
       expect(expected).to.eql(assertion);
     });
   });
