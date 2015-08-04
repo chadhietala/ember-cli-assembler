@@ -28,6 +28,7 @@
     "solid-fire": "9.0.0",
     "ember-cli-sextant": "1.0.0",
     "no-reexport-new-structure": "2.0.0",
-    "legacy-without-reexport": "2.0.0"
+    "legacy-without-reexport": "2.0.0",
+    "loader.js": "1.0.0"
   }
 }
