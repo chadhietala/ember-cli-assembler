@@ -346,12 +346,52 @@ describe('assembler', function() {
     });
 
     describe('import', function() {
-      it('creates a legacy tree', function() {
+
+      it('appends dependencies', function() {
+        assembler = new Assembler();
+        assembler.import('vendor/moment.js', {type: 'vendor'});
+        expect(assembler.legacyFilesToAppend).to.deep.eql([{ type: 'vendor', prepend: false, path: 'vendor/moment.js' }]);
+      });
+
+      it('prepends dependencies', function() {
         assembler = new Assembler({
         });
-        assembler.import('vendor/moment.js', {type: 'vendor', exports: { moment: ['default'] } });
-        expect(assembler.legacyImports.length).to.eql(1);
+        assembler.import('vendor/es3-shim.js', {type: 'vendor'});
+        assembler.import('vendor/es5-shim.js', {type: 'vendor', prepend: true});
+        expect(assembler.legacyFilesToAppend[0]).to.deep.eql({
+          path: 'vendor/es5-shim.js',
+          prepend: true,
+          type: 'vendor'
+        });
       });
+
+      it('defaults to development if production is not set', function() {
+        process.env.EMBER_ENV = 'production';
+        assembler = new Assembler();
+        assembler.import({
+          'development': 'vendor/jquery.js'
+        });
+
+        expect(assembler.legacyFilesToAppend[0]).to.deep.eql({
+          type: 'vendor',
+          prepend: false,
+          path: 'vendor/jquery.js'
+        });
+
+        process.env.EMBER_ENV = undefined;
+      });
+
+      it('honors explicitly set to null in environment', function() {
+       process.env.EMBER_ENV = 'production';
+       assembler = new Assembler();
+       assembler.import({
+         development: 'vendor/jquery.js',
+         production:  null
+       });
+
+       expect(assembler.legacyFilesToAppend).to.deep.eql([]);
+       process.env.EMBER_ENV = undefined;
+     });
     });
 
     describe('isEnabled is called properly', function() {
