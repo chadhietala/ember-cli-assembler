@@ -165,8 +165,7 @@ describe('Acceptance: Assembler', function() {
     return build.build().then(function(results) {
       var files = walkSync(results.directory);
       var expectactions = [
-        'test-support/',
-        'test-support/some-test-thing.js'
+        'some-test-thing.js'
       ];
 
       expect(assembler.env).to.eql('development');
